@@ -1,11 +1,16 @@
 #pragma once
 
+#include <exception>
+#include <stdexcept>
+#include <cstdlib>
+
 template <typename T>
 class Array {
 
 	private:
 
 	T *_array;
+	unsigned int _arraySize;
 
 	public:
 
@@ -14,6 +19,8 @@ class Array {
 	~Array(void);
 
 	const T& operator[](std::size_t pos) const;
+	T& operator[](std::size_t pos);
+	unsigned int size(void) const;
 };
 
 #include "Array.tpp"
