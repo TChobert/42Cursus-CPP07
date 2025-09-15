@@ -1,65 +1,95 @@
-#include "Array.hpp"
-
 #include <iostream>
 #include <string>
-#include <stdexcept>
+#include "Array.hpp"
 
 int main() {
-    // 1. Test avec un Array<int>
-    Array<int> intArr(5);
-    std::cout << "Array<int> size: " << intArr.size() << std::endl;
-
-    // Remplissage
-    for (unsigned int i = 0; i < intArr.size(); ++i)
-        intArr[i] = i * 10;
-
-    // Affichage
-    std::cout << "Contents of intArr: ";
-    for (unsigned int i = 0; i < intArr.size(); ++i)
-        std::cout << intArr[i] << " ";
-    std::cout << std::endl;
-
-    // Test accès hors limite
     try {
-        std::cout << "Accessing intArr[10]..." << std::endl;
-        intArr[10] = 42;  // hors borne
-    } catch (const std::out_of_range& e) {
-        std::cout << "Exception caught: " << e.what() << std::endl;
-    }
+        std::cout << "=== Test Array<int> ===" << std::endl;
+        Array<int> arrInt(5);
 
-    std::cout << "--------------------------------" << std::endl;
+        // Remplissage
+        for (unsigned int i = 0; i < arrInt.size(); ++i)
+            arrInt[i] = i * 10;
 
-    // 2. Test avec un Array<std::string>
-    Array<std::string> strArr(3);
-    strArr[0] = "hello";
-    strArr[1] = "world";
-    strArr[2] = "template";
+        // Affichage
+        std::cout << "arrInt: ";
+        for (unsigned int i = 0; i < arrInt.size(); ++i)
+            std::cout << arrInt[i] << " ";
+        std::cout << std::endl;
 
-    std::cout << "Array<std::string> size: " << strArr.size() << std::endl;
-    std::cout << "Contents of strArr: ";
-    for (unsigned int i = 0; i < strArr.size(); ++i)
-        std::cout << strArr[i] << " ";
-    std::cout << std::endl;
+        // Test constructeur de copie
+        Array<int> copyInt(arrInt);
+        copyInt[0] = 999;
+        std::cout << "copyInt après modification: ";
+        for (unsigned int i = 0; i < copyInt.size(); ++i)
+            std::cout << copyInt[i] << " ";
+        std::cout << std::endl;
 
-    // Test accès hors limite
-    try {
-        std::cout << "Accessing strArr[5]..." << std::endl;
-        strArr[5] = "oops";  // hors borne
-    } catch (const std::out_of_range& e) {
-        std::cout << "Exception caught: " << e.what() << std::endl;
-    }
+        std::cout << "arrInt après modification de copyInt: ";
+        for (unsigned int i = 0; i < arrInt.size(); ++i)
+            std::cout << arrInt[i] << " ";
+        std::cout << std::endl;
 
-    std::cout << "--------------------------------" << std::endl;
+        // Test opérateur d'assignation
+        Array<int> assignInt;
+        assignInt = arrInt;
+        assignInt[1] = 555;
+        std::cout << "assignInt après modification: ";
+        for (unsigned int i = 0; i < assignInt.size(); ++i)
+            std::cout << assignInt[i] << " ";
+        std::cout << std::endl;
 
-    // 3. Test Array vide (taille 0)
-    Array<double> emptyArr;
-    std::cout << "Array<double> size: " << emptyArr.size() << std::endl;
+        // Test exception pour accès hors borne
+        try {
+            std::cout << "Accès hors borne arrInt[10]: ";
+            arrInt[10] = 42;
+        } catch (const std::out_of_range& e) {
+            std::cout << "Exception: " << e.what() << std::endl;
+        }
 
-    try {
-        std::cout << "Accessing emptyArr[0]..." << std::endl;
-        emptyArr[0] = 3.14;
-    } catch (const std::out_of_range& e) {
-        std::cout << "Exception caught: " << e.what() << std::endl;
+        std::cout << "\n=== Test Array<std::string> ===" << std::endl;
+        Array<std::string> arrStr(3);
+        arrStr[0] = "hello";
+        arrStr[1] = "world";
+        arrStr[2] = "template";
+
+        std::cout << "arrStr: ";
+        for (unsigned int i = 0; i < arrStr.size(); ++i)
+            std::cout << arrStr[i] << " ";
+        std::cout << std::endl;
+
+        // Copie et modification
+        Array<std::string> copyStr(arrStr);
+        copyStr[1] = "C++";
+        std::cout << "copyStr après modification: ";
+        for (unsigned int i = 0; i < copyStr.size(); ++i)
+            std::cout << copyStr[i] << " ";
+        std::cout << std::endl;
+
+        std::cout << "arrStr après modification de copyStr: ";
+        for (unsigned int i = 0; i < arrStr.size(); ++i)
+            std::cout << arrStr[i] << " ";
+        std::cout << std::endl;
+
+        // Test exception pour accès hors borne
+        try {
+            std::cout << "Accès hors borne arrStr[5]: ";
+            arrStr[5] = "oops";
+        } catch (const std::out_of_range& e) {
+            std::cout << "Exception: " << e.what() << std::endl;
+        }
+
+        std::cout << "\n=== Test Array vide ===" << std::endl;
+        Array<double> emptyArr;
+        std::cout << "emptyArr size: " << emptyArr.size() << std::endl;
+        try {
+            emptyArr[0] = 3.14;
+        } catch (const std::out_of_range& e) {
+            std::cout << "Exception: " << e.what() << std::endl;
+        }
+
+    } catch (const std::exception& e) {
+        std::cout << "Unexpected exception: " << e.what() << std::endl;
     }
 
     return 0;
